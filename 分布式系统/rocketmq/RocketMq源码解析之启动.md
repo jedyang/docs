@@ -52,7 +52,9 @@ mvn clean package -Dmaven.test.skip=true
 
 将`distribution`目录中的`broker.conf`和`logback_broker.xml`和`logback_namesrv.xml`复制过去一份
 
-再配置一下Rocketmq_home环境参数，用来找到配置文件
+再配置一下Rocketmq_home环境参数，用来找到配置文件。如果不配置，会启动失败
+
+>Please set the ROCKETMQ_HOME variable in your environment to match the location of the RocketMQ installation
 
 ![image-20201010151438237](RocketMq源码解析（一）.assets/image-20201010151438237.png)
 
@@ -103,29 +105,55 @@ storePathCommitLog=D:\\github\\rocketmq-master\\dataDir\\commitlog
 The broker[broker-a, x.x.x.x:10911] boot success. serializeType=JSON and name server is 127.0.0.1:9876
 ```
 
+此时会产生下列文件
+
+![image-20201110173130142](RocketMq源码解析之启动.assets/image-20201110173130142.png)
+
+
+
 #### 发送消息
 
-在org.apache.rocketmq.example.quickstart包下，有最简单的测试代码
+在org.apache.rocketmq.example.quickstart包下，有最简单的测试代码。设置topic名为TopicTest
 
 ```
         DefaultMQProducer producer = new DefaultMQProducer("my_produce_group_name");
         producer.setNamesrvAddr("127.0.0.1:9876");
+        Message msg = new Message("TopicTest" /* Topic */,
+                    "TagA" /* Tag */,
+                    ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+                );
 ```
 
 执行main方法，可以看到消息发送成功的日志
 
-查看datadir目录，看到已经生成了很多文件。最重要的就是commitlog和consumequeue
+查看datadir目录，又生成了文件。最重要的就是commitlog和consumequeue
 
 commitlog下的文件，直接就是占1G空间的文件。
 
 ![image-20201010155153719](RocketMq源码解析（一）.assets/image-20201010155153719.png)
 
+并且commitlog文件的命名就是以文件的数据偏移量命名，1G = 1073741824byte
+
+![image-20201110174730262](RocketMq源码解析之启动.assets/image-20201110174730262.png)
+
+![image-20201110175259130](RocketMq源码解析之启动.assets/image-20201110175259130.png)
+
+consumequeue下的是以topic名字分组的消费队列进度。文件大小默认是5860KB。
+
+
+
+![image-20201110175108593](RocketMq源码解析之启动.assets/image-20201110175108593.png)
+
+index下是消息索引文件，目的是为了快速定位到消息。大小默认是400M。名字默认是时间戳。
+
+
+
 #### 消费消息
 
 ```
 DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("my_consume_group_name");
-consumer.setNamesrvAddr("name-server1-ip:9876;name-server2-ip:9876")
+consumer.setNamesrvAddr("127.0.0.1:9876")
 ```
 
-允许main方法，可以看到消息消息掉了。
+运行main方法，可以看到消息消息掉了。
 

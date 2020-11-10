@@ -32,6 +32,12 @@ private final AllocateMappedFileService allocateMappedFileService;
 private final ReputMessageService reputMessageService;
 ```
 
+### commitlog文件
+
+我们先必须清楚commitlog文件在服务器上是怎么存储的。
+
+
+
 ### 入口方法
 
 org.apache.rocketmq.store.DefaultMessageStore#putMessage
