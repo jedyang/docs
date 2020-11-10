@@ -130,9 +130,3 @@ mmap的特点是，不会将数据从内核空间copy到用户空间。而是在
 java的NIO中，常用的FileChannel。有个map方法，FileChannel的map方法会返回一个MappedByteBuffer。MappedByteBuffer是一个直接字节缓冲器，该缓冲器的内存是一个文件的内存映射区域。map方法底层是通过mmap实现的，因此将文件内存从磁盘读取到内核缓冲区后，用户空间和内核空间共享该缓冲区。
 
 
-
-https://www.linuxjournal.com/article/6345
-
-https://www.jianshu.com/p/193cae9cbf07
-
-https://www.jianshu.com/p/e76e3580e356

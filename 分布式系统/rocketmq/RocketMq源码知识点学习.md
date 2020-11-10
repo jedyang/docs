@@ -168,3 +168,99 @@ private final CopyOnWriteArrayList<MappedFile> mappedFiles = new CopyOnWriteArra
 ```
 
 在多线程编程中经常会用到CopyOnWriteArrayList
+
+CopyOnWriteArrayList要理解关键词CopyOnWrite。
+
+CopyOnWrite的意思是写时复制。即当有修改动作时，会复制一份list数据。完成修改后，将
+
+```
+public boolean add(E e) {
+    final ReentrantLock lock = this.lock;
+    lock.lock();
+    try {
+        Object[] elements = getArray();
+        int len = elements.length;
+        Object[] newElements = Arrays.copyOf(elements, len + 1);
+        newElements[len] = e;
+        setArray(newElements);
+        return true;
+    } finally {
+        lock.unlock();
+    }
+}
+```
+
+完成修改后，将指针指向新的数据
+
+```
+/**
+ * Sets the array.
+ */
+final void setArray(Object[] a) {
+    array = a;
+}
+```
+
+注意CopyOnWriteArrayList的数据使用了transient 和 volatile两个关键字
+
+```
+/** The array, accessed only via getArray/setArray. */
+private transient volatile Object[] array;
+```
+
+#### volatile
+
+volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。而且，当成员变量发生变 化时，强迫线程将变化值回写到共享内存。这样在任何时刻，两个不同的线程总是看到某个成员变量的同一个值。
+
+#### **transient** 
+
+在对象序列化的过程中，标记为transient的变量不会被序列化。
+
+对CopyOnWriteArrayList来说，volatile修饰很重要，保证了多个线程，读取的时同一份数据。
+
+#### 应用场景
+
+CopyOnWriteArrayList适合于读多写少的场景。CopyOnWriteArrayList是完全不加锁的。因此效率很高。
+
+#### 缺点
+
+CopyOnWriteArrayList的缺点主要是内存占用和数据一致性问题。
+
+内存占用是在写时会复制一份数据，因此多占了一份内存。如果这个list非常大，可能引起gc问题。但是因为写时加锁的，最多也只会多存在一个复制备份。
+
+一致性问题是，CopyOnWrite容器只能保证数据的最终一致性，不能保证数据的实时一致性。在修改操作中，读操作依然读取的是旧数据。
+
+
+
+### CRC32校验
+
+CRC的全称是循环冗余校验。
+
+在RocketMq存储数据时，会计算数据的CRC32值。并存储。
+
+当消费端收到数据后，会计算这个值。保证保证数据传输过程中没有损坏。
+
+```
+public static int crc32(byte[] array) {
+    if (array != null) {
+        return crc32(array, 0, array.length);
+    }
+
+    return 0;
+}
+
+public static int crc32(byte[] array, int offset, int length) {
+    CRC32 crc32 = new CRC32();
+    crc32.update(array, offset, length);
+    return (int) (crc32.getValue() & 0x7FFFFFFF);
+}
+```
+
+这是rocketmq计算crc的源码，就是用了jdk提供的CRC32。
+
+但是mq这里按位与0x7FFFFFFF，取了31位。原因还不理解。
+
+
+
+### ByteBuffer和MappedByteBuffer
+

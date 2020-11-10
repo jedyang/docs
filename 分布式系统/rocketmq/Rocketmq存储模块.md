@@ -48,9 +48,53 @@ this.commitLog.putMessage(msg);
 
 1，对消息体计算CRC32
 
-2，mappedFile
+2，获取当前正在写入的mappedFile
+
+mappedFile非常重要。
+
+我们知道RocketMq的消息是存储在commitlog中的，这是从大的方面理解。
+
+继续往下追，commitlog又是基于mappedFileQueue
+
+```
+protected final MappedFileQueue mappedFileQueue;
+```
+
+从名字上就能看出，mappedFileQueue是一个队列，它的底层又是
+
+```
+private final CopyOnWriteArrayList<MappedFile> mappedFiles = new CopyOnWriteArrayList<MappedFile>();
+```
+
+MappedFile队列。
+
+MappedFile对应着最终磁盘上的存储文件，
+
+```
+private MappedByteBuffer mappedByteBuffer;
+```
+
+是MappedByteBuffer的封装，消息存储跟磁盘、内存的交互都是通过它完成。
+
+获取当前正在写入的mappedFile
 
 ```
 MappedFile mappedFile = this.mappedFileQueue.getLastMappedFile();
 ```
+
+如果是null，或者满了。新创建一个文件
+
+```
+if (null == mappedFile || mappedFile.isFull()) {
+    mappedFile = this.mappedFileQueue.getLastMappedFile(0); // Mark: NewFile may be cause noise
+}
+```
+
+3，追加消息
+
+```
+result = mappedFile.appendMessage(msg, this.appendMessageCallback);
+```
+
+这里传一个回调接口appendMessageCallback。appendMessageCallback是一个内部类，这个commitlog类接近2000行了，个人认为这里不该用内部类，拆分出去更好。
 
