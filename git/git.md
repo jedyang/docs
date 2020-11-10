@@ -300,6 +300,8 @@ git checkout -b 新分支名 v1.0
 
 错误显示：remote error: CAPTCHA required
 
+![bitbucket](git.assets/bitbucket.png)
+
 #### 解决：
 
 **1，打开控制面板；**
