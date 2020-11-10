@@ -2,7 +2,7 @@
 
 [TOC]
 
-| 作者 | 海链数字科技 |
+| 作者 | 技术笔记与开源分享 |
 | ---- | ------------ |
 | 版本 | 1.0    |
 | 更新时间 | 2020-3-15 |
@@ -25,7 +25,7 @@ git是分布式的，表示我们每个人的本地项目都包含一个完整Gi
 
 SVN是记录每个文件每个版本的差异变化，可以说是**基于文件差异的版本控制**
 
-![存储每个文件与初始版本的差异。](D:\文章\git\deltas.png)
+![deltas](git.assets/deltas.png)
 
 如图，svn是存储每个文件在版本的不断迭代中产生的**差异**。
 
@@ -33,7 +33,7 @@ SVN是记录每个文件每个版本的差异变化，可以说是**基于文件
 
 git不一样。如下图所示，git在你每次提交时，都会对所有文件产出一个快照。当然，如果文件没有修改，本次的快照只是生成一个链接，指向之前的文件，不会再copy一份文件。这和docker的分层镜像有点相似。
 
-![Git 存储项目随时间改变的快照。](D:\文章\git\snapshots.png)
+![snapshots](git.assets/snapshots.png)
 
 对比两张图，git倾向于纵向切分，每一个版本是一个清晰独立的版本。而svn的每一个版本，需要在前一个版本的基础上追加差异才能得到。
 
@@ -63,7 +63,7 @@ git相对来说要复杂一点，更新代码-->开发代码-->add -->commit -->
 
 ### 仓库
 
-![图1](D:\文章\git\2528995214-59b0b456ecf1b_articlex.png)
+![2528995214-59b0b456ecf1b_articlex](git.assets/2528995214-59b0b456ecf1b_articlex.png)
 
 workspace：工作区。当前你修改的代码所在的地方。
 
@@ -75,7 +75,7 @@ remote：远端仓库/中央仓库。git push命令。
 
 下面这张图更详细一点：
 
-![一篇文章，教你学会Git](D:\文章\git\669fea4aa86d4b97bed433bea954ec16.jpg)
+![669fea4aa86d4b97bed433bea954ec16](git.assets/669fea4aa86d4b97bed433bea954ec16.jpg)
 
 ### 分支
 
@@ -85,7 +85,7 @@ remote：远端仓库/中央仓库。git push命令。
 
 Git 是怎么创建新分支的呢？ 很简单，它只是为你创建了一个可以移动的新的指针。
 
-![HEAD 指向当前所在的分支。](D:\文章\git\head-to-master.png)
+![head-to-master](git.assets/head-to-master.png)
 
 如图，最早的提交时98ca9，每次提交后，整个master分支不断变长。HEAD是一个特殊指针，告诉git，我们现在在哪个分支上。
 
@@ -95,11 +95,11 @@ Git 是怎么创建新分支的呢？ 很简单，它只是为你创建了一个
 
 使用`git checkout testing`进行分支切换
 
-![HEAD 指向当前所在的分支。](D:\文章\git\head-to-testing.png)
+![head-to-testing](git.assets/head-to-testing.png)
 
 现在head指针就指向了testing分支，我们所作的改动全部发生在testing分支上。
 
-![HEAD 分支随着提交操作自动向前移动。](D:\文章\git\advance-testing.png)
+![advance-testing](git.assets/advance-testing.png)
 
 做一次新的改动提交。testing分支继续变长。但是master分支依然指向f30ab。
 
@@ -119,7 +119,7 @@ Git 是怎么创建新分支的呢？ 很简单，它只是为你创建了一个
 
 ### 常用命令
 
-![img](D:\文章\git\4389199-ee631c43d3f89b99.webp)
+![4389199-ee631c43d3f89b99](git.assets/4389199-ee631c43d3f89b99.webp)
 
 ### 分支操作
 
@@ -138,7 +138,7 @@ Git 是怎么创建新分支的呢？ 很简单，它只是为你创建了一个
 
 #### merge操作
 
-![img](D:\文章\git\4389199-9f9069d6edd455fa.webp)
+![4389199-9f9069d6edd455fa](git.assets/4389199-9f9069d6edd455fa.webp)
 
 merge命令把不同的分支合并起来。如上图，在实际开放中，我们可能从master分支中切出一个分支，然后进行开发完成需求，中间经过R3,R4,R5的commit记录，最后开发完成需要合入master中，这便用到了merge。
 
@@ -148,11 +148,11 @@ merge命令把不同的分支合并起来。如上图，在实际开放中，我
 
 一般在merge之后，会出现conflict，需要针对冲突情况，手动解除冲突。主要是因为两个用户修改了同一文件的同一块区域。如下图所示，需要手动解除。
 
-![img](D:\文章\git\4389199-01f5ea82c147586a.webp)
+![4389199-01f5ea82c147586a](git.assets/4389199-01f5ea82c147586a.webp)
 
 #### rebase操作
 
-![img](D:\文章\git\4389199-69fa6b680835ecf5.webp)
+![4389199-69fa6b680835ecf5](git.assets/4389199-69fa6b680835ecf5.webp)
 
 rebase又称为衍合，是合并的另外一种选择。
 
@@ -191,7 +191,7 @@ A---B---D---E---C'---F'   test, master
 
 #### reset
 
-![img](D:\文章\git\4389199-dac56d87e51f61ca.webp)
+![4389199-dac56d87e51f61ca](git.assets/4389199-dac56d87e51f61ca.webp)
 
 reset命令把当前分支指向另一个位置，并且相应的变动工作区和暂存区。这个命令还是比较危险的。操作时请确保你知道你要做什么。
 
@@ -203,13 +203,13 @@ reset命令把当前分支指向另一个位置，并且相应的变动工作区
 
 #### revert
 
-![img](D:\文章\git\4389199-dc3986ab2b51cab9.webp)
+![4389199-dc3986ab2b51cab9](git.assets/4389199-dc3986ab2b51cab9.webp)
 
 git revert用一个新提交来消除一个历史提交所做的任何修改。如上图，将提交回滚到15df9b6。
 
 #### revert与reset的区别
 
-![img](D:\文章\git\4389199-98ff805e35213952.webp)
+![4389199-98ff805e35213952](git.assets/4389199-98ff805e35213952.webp)
 
 - git revert是用一次新的commit来回滚之前的commit，**git reset是直接删除指定的commit。**
 
@@ -306,13 +306,17 @@ git checkout -b 新分支名 v1.0
 
 **2.点击打开用户账户；**
 
+![83809ca8974148768c306ef15125a374](git.assets/83809ca8974148768c306ef15125a374.jpg)
+
 **3.点击打开凭证管理（windows凭证管理栏）**
+
+![4ec643c10d244dabb2756208d23bee08](git.assets/4ec643c10d244dabb2756208d23bee08.jpg)
 
 **4.普通凭证下拉打开修改你已存在的git账号密码**
 
 
 
-![bitbucket遇到remote error: CAPTCHA required错误解决](D:\文章\git\b88aae9c533449f5b8e3f3897fb1108d.jpg)
+![b88aae9c533449f5b8e3f3897fb1108d](git.assets/b88aae9c533449f5b8e3f3897fb1108d.jpg)
 
 修改或删除都可以
 
