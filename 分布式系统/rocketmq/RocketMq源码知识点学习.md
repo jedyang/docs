@@ -102,7 +102,7 @@ lock与tryLock的区别：
 
 ### 自旋锁与可重入锁
 
-在RocketMq的broker落盘消息的store代码中，想文件中落盘数据之前加了锁。默认是使用自旋锁。
+在RocketMq的broker落盘消息的store代码中，append数据之前加了锁。默认是使用自旋锁。
 
 ```
 putMessageLock.lock(); //spin or ReentrantLock ,depending on store config
@@ -264,3 +264,12 @@ public static int crc32(byte[] array, int offset, int length) {
 
 ### ByteBuffer和MappedByteBuffer
 
+都是jdk nio提供的缓冲区类
+
+slice方法，切片。将一个大缓冲区的一部分切出来，作为一个单独的缓冲区，但是它们共用同一个内部数组。切片从原缓冲区的position位置开始，至limit为止。原缓冲区和切片各自拥有自己的属性。
+
+在RocketMq的store流程中，将缓冲区的切片返回给commitlog的回调函数
+
+
+
+### msgID的生成

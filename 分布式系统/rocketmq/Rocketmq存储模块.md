@@ -36,7 +36,11 @@ private final ReputMessageService reputMessageService;
 
 我们先必须清楚commitlog文件在服务器上是怎么存储的。
 
+代码中的commitlog        对应磁盘上的    commitlog文件夹
 
+代码commitlog中有一个MappedFileQueue   对应磁盘上     commitlog下的文件列表
+
+MappedFileQueue  里的MappedFile   映射  磁盘上具体的一个commitlog文件
 
 ### 入口方法
 
@@ -104,3 +108,20 @@ result = mappedFile.appendMessage(msg, this.appendMessageCallback);
 
 这里传一个回调接口appendMessageCallback。appendMessageCallback是一个内部类，这个commitlog类接近2000行了，个人认为这里不该用内部类，拆分出去更好。
 
+MappedFile的几个指针
+
+wrotePosition  ： 文件的写入指针。标记当前写到文件的位置。
+
+committedPosition： 提交位置指针
+
+flushedPosition ： 刷盘位置指针
+
+4，回调append
+
+回调commitlog的内部类方法。
+
+4.1   计算msgid
+
+
+
+判断消息长度+
