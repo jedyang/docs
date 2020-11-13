@@ -264,7 +264,7 @@ public static int crc32(byte[] array, int offset, int length) {
 
 ### ByteBuffer和MappedByteBuffer
 
-都是jdk nio提供的缓冲区类
+都是jdk nio提供的缓冲区类。ByteBuffer和MappedByteBuffer操作的都是堆外内存
 
 slice方法，切片。将一个大缓冲区的一部分切出来，作为一个单独的缓冲区，但是它们共用同一个内部数组。切片从原缓冲区的position位置开始，至limit为止。原缓冲区和切片各自拥有自己的属性。
 

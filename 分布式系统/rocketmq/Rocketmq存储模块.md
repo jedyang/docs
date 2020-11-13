@@ -56,9 +56,9 @@ this.commitLog.putMessage(msg);
 
 ### putMessage方法
 
-1，对消息体计算CRC32
+#### 1，对消息体计算CRC32
 
-2，获取当前正在写入的mappedFile
+#### 2，获取当前正在写入的mappedFile
 
 mappedFile非常重要。
 
@@ -100,7 +100,7 @@ if (null == mappedFile || mappedFile.isFull()) {
 }
 ```
 
-3，追加消息
+#### 3，追加消息
 
 ```
 result = mappedFile.appendMessage(msg, this.appendMessageCallback);
@@ -116,12 +116,71 @@ committedPosition： 提交位置指针
 
 flushedPosition ： 刷盘位置指针
 
-4，回调append
+#### 4，回调append  
 
-回调commitlog的内部类方法。
+回调commitlog的内部类方法。代码  org.apache.rocketmq.store.CommitLog.DefaultAppendMessageCallback#doAppend(long, java.nio.ByteBuffer, int, org.apache.rocketmq.store.MessageExtBrokerInner)
 
-4.1   计算msgid
+##### 4.1 计算msgid
+
+##### 4.2获取consume queue的偏移量
+
+```
+keyBuilder.setLength(0);
+keyBuilder.append(msgInner.getTopic());
+keyBuilder.append('-');
+keyBuilder.append(msgInner.getQueueId());
+String key = keyBuilder.toString();
+Long queueOffset = CommitLog.this.topicQueueTable.get(key);
+```
+
+##### 4.3 消息的size校验
+
+##### 4.4 消息写入bytebuffer
+
+##### 4.5更新队列的offset
+
+```
+// The next update ConsumeQueue information
+CommitLog.this.topicQueueTable.put(key, ++queueOffset);
+```
+
+#### 5，成功后，刷盘线程和同步线程
+
+```
+//释放锁
+putMessageLock.unlock();
+//刷盘
+handleDiskFlush(result, putMessageResult, msg);
+//执行HA主从同步
+handleHA(result, putMessageResult, msg);
+```
 
 
 
-判断消息长度+
+### 文件内存映射
+
+RocketMQ通过使用内存映射文件来提高IO访问性能，无论是CommitLog、ConsumerQueue还是IndexFile，单个文件都被设计为固定长度，如果一个文件写满以后再创建一个新文件，文件名就为该文件第一条消息对应的全局物理偏移量。
+
+MappedFile类对应commitlog文件夹下的消息文件
+
+```
+public static final int OS_PAGE_SIZE = 1024 * 4;//操作系统的页大小，默认是4K
+private static final AtomicLong TOTAL_MAPPED_VIRTUAL_MEMORY = new AtomicLong(0);// 当前JVM实例中MappedFile虚拟内存
+private static final AtomicInteger TOTAL_MAPPED_FILES = new AtomicInteger(0);//当前JVM实例中MappedFile对象个数
+protected final AtomicInteger wrotePosition = new AtomicInteger(0);//当前文件的写指针
+protected final AtomicInteger committedPosition = new AtomicInteger(0);//当前文件的提交指针
+private final AtomicInteger flushedPosition = new AtomicInteger(0);//刷写到磁盘指针
+protected int fileSize;//文件大小
+protected FileChannel fileChannel;//文件通道	
+/**
+ * 消息都是先放到这，然后再放进文件通道
+ */
+protected ByteBuffer writeBuffer = null;//堆外内存ByteBuffer
+protected TransientStorePool transientStorePool = null;//堆外内存池
+private String fileName;//文件名称
+private long fileFromOffset;//该文件的初始偏移量
+private File file;//物理文件
+private MappedByteBuffer mappedByteBuffer;//物理文件对应的内存映射Buffer
+private volatile long storeTimestamp = 0;//文件最后一次内容写入时间
+private boolean firstCreateInQueue = false;//是否是MappedFileQueue队列中第一个文件
+```
