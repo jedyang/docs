@@ -184,3 +184,41 @@ private MappedByteBuffer mappedByteBuffer;//物理文件对应的内存映射Buf
 private volatile long storeTimestamp = 0;//文件最后一次内容写入时间
 private boolean firstCreateInQueue = false;//是否是MappedFileQueue队列中第一个文件
 ```
+
+
+
+### consumequeue文件
+
+commitlog文件时顺序写，这样可以极大的提高写性能，但是如果随机读取就会效率很低。所以就有了consumequeue呵index文件
+
+在messageStore初始化的时候，会开启一个线程reputMessageService，进行消息的分发。根据commitlog准实时的更新consumequeue中的偏移量
+
+```
+this.reputMessageService.setReputFromOffset(maxPhysicalPosInLogicQueue);
+this.reputMessageService.start();
+```
+
+```
+@Override
+public void run() {
+    DefaultMessageStore.log.info(this.getServiceName() + " service started");
+
+    while (!this.isStopped()) {
+        try {
+            Thread.sleep(1);
+            this.doReput();
+        } catch (Exception e) {
+            DefaultMessageStore.log.warn(this.getServiceName() + " service has exception. ", e);
+        }
+    }
+
+    DefaultMessageStore.log.info(this.getServiceName() + " service end");
+}
+```
+
+可以看到其run方法，不断执行doReput。
+
+看看doReput都在干嘛
+
+
+
