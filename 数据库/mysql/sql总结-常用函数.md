@@ -1,12 +1,12 @@
 
 
-#### 日期时间截取
+#### 日期时间截取 date_format
 
 ```
-selectdate_format(expenses_date,'%H:%i:%S') from t_expenses_records
+select date_format(expenses_date,'%H:%i:%S') from t_expenses_records
 ```
 
-
+和case when配合，判断时间
 
 ```
 select d.records_id, e.res_name, e.service_name,
@@ -18,4 +18,14 @@ select d.records_id, e.res_name, e.service_name,
       d.food_type_name, d.food_name, d.subsidy_rate,d.expenses_number, d.food_amount, r.expenses_date from t_expenses_detailed d, temp_expense_record e, t_expenses_records r
 where d.records_id = e.record_id
 and e.record_id = r.id
+```
+
+
+
+#### 字符串替换 replace
+
+将字段中的/ 替换成 - 
+
+```
+update t_clean_expense_food_day set expense_day = replace(expense_day,'/','-');
 ```

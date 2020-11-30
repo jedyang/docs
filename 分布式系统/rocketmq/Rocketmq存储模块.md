@@ -157,6 +157,14 @@ handleHA(result, putMessageResult, msg);
 
 
 
+### 刷盘
+
+消息都是先存到内存中，MappedByteBuffer中。然后根据是同步刷盘还是异步刷盘进行不同的刷盘策略。
+
+
+
+
+
 ### 文件内存映射
 
 RocketMQ通过使用内存映射文件来提高IO访问性能，无论是CommitLog、ConsumerQueue还是IndexFile，单个文件都被设计为固定长度，如果一个文件写满以后再创建一个新文件，文件名就为该文件第一条消息对应的全局物理偏移量。
