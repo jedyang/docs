@@ -22,7 +22,7 @@ Swipper组件默认最小高度是150px，如果图片比较大，超过的部�
         style="height:{{imgheights[current]}}rpx;">
   <block wx:for="{{images}}" wx:key="index">
     <swiper-item>
-      <image mode="widthFix" class="swiper-image" src="{{item}}" mode='widthFix' data-id='{{index}}' data-url='{{item}}'  bindlongtap="savePic" bindload="imageLoad"/>
+      <image mode="widthFix" class="swiper-image" src="{{item}}" data-id='{{index}}' data-url='{{item}}'  bindlongtap="savePic" bindload="imageLoad"/>
     </swiper-item>
   </block>
 </swiper>

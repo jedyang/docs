@@ -59,3 +59,35 @@ $ sudo usermod -aG docker $USER
 docker run hello-world
 
 测试一下
+
+
+
+### 报错解决
+
+>docker: Error response from daemon: Get https://registry-1.docker.io/v2/library/hello-world/manifests/latest: Get https://auth.docker.io/token?scope=repository%3Alibrary%2Fhello-world%3Apull&service=registry.docker.io: net/http: TLS handshake timeout.
+
+解决：配置阿里云的镜像源
+
+CentOS 7系统的配置步骤：
+
+1、打开daemon.json文件：
+
+```java
+vi /etc/docker/daemon.json
+1
+```
+
+2、在里面输入阿里云镜像配置：
+
+```java
+{
+ "registry-mirrors":["https://6kx4zyno.mirror.aliyuncs.com"]
+}
+123
+```
+
+3、重启docker服务：
+
+```java
+sudo systemctl restart docker
+```
