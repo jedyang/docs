@@ -64,6 +64,8 @@ docker run hello-world
 
 ### 报错解决
 
+#### 报错
+
 >docker: Error response from daemon: Get https://registry-1.docker.io/v2/library/hello-world/manifests/latest: Get https://auth.docker.io/token?scope=repository%3Alibrary%2Fhello-world%3Apull&service=registry.docker.io: net/http: TLS handshake timeout.
 
 解决：配置阿里云的镜像源
@@ -90,4 +92,36 @@ vi /etc/docker/daemon.json
 
 ```java
 sudo systemctl restart docker
+```
+
+
+
+2021.2.22日更新
+
+今天在腾讯云的一台云主机上安装了最新版docker  3:20.10.3-3.el7版本
+
+又报上面的错误，当时上面的方法没有解决问题。
+
+在网上找到一下解决方法，测试可用：
+
+#### 报错：
+
+[root@VM-0-3-centos ~]# docker run hello-world
+Unable to find image 'hello-world:latest' locally
+docker: Error response from daemon: Head https://registry-1.docker.io/v2/library/hello-world/manifests/latest: Get https://auth.docker.io/token?scope=repository%3Alibrary%2Fhello-world%3Apull&service=registry.docker.io: net/http: TLS handshake timeout.
+
+#### 解决：
+
+```
+[root@docker-registry ~]# yum install bind-utils                          // 安装dig工具
+[root@docker-registry ~]# dig @114.114.114.114 registry-1.docker.io
+```
+
+114.114.114.114是
+
+**选择上面命令执行结果中的一组解析放到本机的/etc/hosts文件里做映射**
+
+```
+[root@docker-registry ~]# vim /etc/hosts
+54.175.43.85    registry-1.docker.io
 ```
