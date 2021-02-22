@@ -76,7 +76,6 @@ CentOS 7系统的配置步骤：
 
 ```java
 vi /etc/docker/daemon.json
-1
 ```
 
 2、在里面输入阿里云镜像配置：
@@ -85,7 +84,6 @@ vi /etc/docker/daemon.json
 {
  "registry-mirrors":["https://6kx4zyno.mirror.aliyuncs.com"]
 }
-123
 ```
 
 3、重启docker服务：
@@ -117,11 +115,19 @@ docker: Error response from daemon: Head https://registry-1.docker.io/v2/library
 [root@docker-registry ~]# dig @114.114.114.114 registry-1.docker.io
 ```
 
-114.114.114.114是
+![image-20210222202602350](服务器部署Docker.assets/image-20210222202602350.png)
+
+bai114.114.114.114是国内移动、电信和du联通通用的DNS，解析zhi成功率相对dao说更高，国内用户使用的比较多，速度相对快、稳定，是国内用户上网常用的DNS。8.8.8.8是GOOGLE公司提供的DNS，该地址是全球通用的，相对zhuan说，更适合国外以及访问国外网站的用户使用。
 
 **选择上面命令执行结果中的一组解析放到本机的/etc/hosts文件里做映射**
 
 ```
 [root@docker-registry ~]# vim /etc/hosts
-54.175.43.85    registry-1.docker.io
+52.5.11.128    registry-1.docker.io
 ```
+
+再次run就好了
+
+
+
+之后pull mysql发现很慢，把解决1的阿里云镜像配置步骤加上，重试就好了，非常快。
