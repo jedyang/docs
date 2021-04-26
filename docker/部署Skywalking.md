@@ -51,7 +51,7 @@ docker run --name skywalking-oap --restart always -p 1234:1234 -p 11800:11800 -p
 #### 启动 UI ：
 
 ```
-docker run --name skywalking-ui --restart always -p 9898:8080 --link skywalking-oap:skywalking-oap -d -e SW_OAP_ADDRESS=skywalking-oap:12800 apache/skywalking-ui
+docker run --name skywalking-ui --restart always -p 9898:8080 --link skywalking-oap:skywalking-oap -d -e SW_OAP_ADDRESS=skywalking-oap:12800 apache/skywalking-ui:8.3.0
 ```
 
 访问9898端口

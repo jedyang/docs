@@ -46,4 +46,31 @@ docker exec -it 容器id bash或sh ：进入容器内命令行
 
 docker logs -f  容器id
 
-查看日志，也可以直接去/var/lib/docker/containers/ 具体容器挂载的目录下，直接看日志json格式
+每个容器的日志默认都会以 json-file 的格式存储于`/var/lib/docker/containers/<容器id>/<容器id>-json.log` 下
+
+查看日志，也可以直接去/var/lib/docker/containers/ 具体容器挂载的目录下，直接看日志json格式（不建议这么做）
+
+如果容器一直运行并且一直产生日志，容器日志会导致磁盘空间爆满，
+
+全局设置限制容器日志大小su
+
+```shell
+# vim /etc/docker/daemon.json
+
+{
+  "registry-mirrors": ["http://f613ce8f.m.daocloud.io"],
+  "log-driver":"json-file",
+  "log-opts": {"max-size":"1024m", "max-file":"3"}
+}
+```
+
+> ```shell
+> # 重启docker守护进程
+> systemctl daemon-reload
+> # 重启docker
+> systemctl restart docker
+> ```
+>
+> **注意：设置的日志大小，只对新建的容器有效。**
+
+设置完成之后，需要删除容器，并重新启动容器，
