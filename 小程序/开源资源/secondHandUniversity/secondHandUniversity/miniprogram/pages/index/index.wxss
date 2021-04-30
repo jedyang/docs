@@ -1,0 +1,107 @@
+.type-container {
+  display: flex;
+  padding: 5rpx 20rpx 0 20rpx;
+  /* position: relative;
+  top:-93rpx; */
+  /* background: rgb(0,0,0,0.137); */
+  margin-top: 15rpx;
+  justify-content: flex-start;
+}
+.type-container .type-item {
+  flex: 1;
+  height: 60rpx;
+}
+.type-container .type-item view {
+  font-size: small;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 10rpx 10rpx 0 0;
+  margin: 0 3rpx;
+  color: rgb(24, 23, 23);
+ 
+}
+.type-container .type-item .type-item-on {
+  color: rgb(111, 240, 218);
+  
+  font-size: medium;
+  box-shadow: 3rpx greg;
+  border-bottom: 2rpx solid  rgb(111, 240, 218);
+}
+
+
+.shopList{
+  height: 230rpx;
+  width: 700rpx;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgb(236, 234, 234);
+  border-radius: 50rpx;
+  margin: 30rpx 25rpx;
+  padding: 30rpx 0;
+  background-color: white;
+ 
+}
+
+.shopList .shop-img {
+  height: 230rpx;
+  width: 300rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  
+  
+}
+.shopList .shop-img image{
+  height: 220rpx;
+  width: 300rpx;
+  border-radius: 30rpx;
+  
+}
+
+.userList{
+  height: 90rpx;
+  width: 300rpx;
+  /* background-color: turquoise; */
+  display: flex;
+  flex-direction: row;
+  margin-top: 50rpx;
+  
+}
+.userList .user-name{
+  color:rgb(206, 203, 199);
+  padding-left: 20rpx;
+  font-size: 30rpx;
+}
+.userList .user-img image{
+  
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 25rpx;
+
+}
+
+
+.shop-msg {
+  height: 300rpx;
+  width: 300rpx;
+  /* background-color: turquoise; */
+  position: relative;
+
+}
+
+.shop-msg .shop-msg__title {
+  font-size: medium;
+  font-weight: 900;
+}
+.shop-msg .shop-msg__detail {
+  position: absolute;
+  bottom: 80rpx;
+  right:0;
+  font-size: 30rpx;
+  color: rgb(66, 64, 62);
+}
+.shop-msg .shop-msg__addr {
+  position: absolute;
+  bottom: 80rpx;
+  font-size: 30rpx;
+  color: rgb(206, 203, 199);
+}

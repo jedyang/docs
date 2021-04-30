@@ -1,0 +1,51 @@
+<view wx:for="{{shopList}}">
+  <view class="swiper-container">
+    <index-swiper imgUrls="{{item.pic}}"></index-swiper>
+  </view>
+<!-- <view>{{item.tell}}</view> -->
+
+<view class="detail-msg">
+ 
+<view class="detail-msg__list">
+  <image src="../../images/title.svg"></image>
+  <view class="detail-msg__title">{{item.title}}</view>
+</view>
+<!-- <view>{{item.type}}</view> -->
+<view class="detail-msg__list">
+  <image src="../../images/star.svg"></image>
+  <view class="detail-msg__collection">{{item.collection}}</view>
+</view>
+
+<view class="detail-msg__list">
+  <image src="../../images/addr.svg"></image>
+<view class="detail-msg__addr">{{item.addr}}</view>
+</view>
+
+<view class="detail-msg__list">
+  <image src="../../images/date.svg"></image>
+  <view class="detail-msg__date">{{item.date}}</view>
+</view>
+
+
+<view class="detail-msg__list">
+  <image src="../../images/des.svg"></image>
+  <view class="detail-msg__des">{{item.des}}</view>
+</view>
+
+
+<view class="detail-msg__list">
+  <image src="../../images/tell.svg"></image>
+  <view class="detail-msg__tell">{{item.tell}}</view>
+</view>
+
+</view>
+
+<view class="button">
+  <button class="copy">复制联系方式</button>
+  <button class="share">分享给小伙伴</button>
+</view>
+</view>
+
+
+
+

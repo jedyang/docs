@@ -1,0 +1,47 @@
+<!-- 组件化swiper -->
+<view class="swiper-container">
+    <index-swiper imgUrls="{{imgUrls}}"></index-swiper>
+  </view>
+
+
+<!-- 组件化search -->
+<my-search></my-search>
+
+
+<!-- 列表分类展示 -->
+<view class="type-container">
+    <view class="type-item" wx:for="{{typeCat}}" wx:key="{{index}}">
+      <view data-id="{{item.id}}" class="type-name {{activeTypeId === item.id ? 'type-item-on' : ''}}"
+      bindtap="typeSwitch" 
+      >
+        {{item.name}}
+      </view>
+    </view>
+
+    
+</view>
+<!-- 商品显示 -->
+      <view wx:for="{{shopList}}" class="shopList">
+      <view class="shop-img">
+        <image src="{{item.pic[0]}}"></image>
+      </view>
+      
+      <view class="shop-msg">
+        <view class="shop-msg__title">{{item.title}}</view>
+      <!-- <view>{{item.type}}</view> -->
+      <view class="userList" wx:for="{{userList}}">
+        <view class="user-img">
+          <image src="{{item.userUrl}}"></image>
+        </view>
+        <view class="user-name">{{item.userName}}</view>
+      </view>
+      <view class="shop-msg__addr">{{item.addr}}</view>
+      <!-- <view>{{item.collection}}</view> -->
+        <!-- <view>{{item.date}}</view> -->
+        <navigator url="/pages/index/detail?_id={{item._id}}">
+          <view class="shop-msg__detail">查看详情</view>
+        </navigator>
+      </view>
+      <!-- <view>{{item.tell}}</view> -->
+     
+</view>

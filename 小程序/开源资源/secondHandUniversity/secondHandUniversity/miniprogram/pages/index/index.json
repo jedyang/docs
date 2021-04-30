@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "校园转转",
+  "usingComponents": {
+    "index-swiper":"/components/swiper/swiper",
+    "my-search":"/components/search/search",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index"
+  }
+}

@@ -1,0 +1,7 @@
+{ 
+  "navigationBarTitleText": "发布闲置",
+  "usingComponents": {
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-button": "@vant/weapp/button/index"
+  }
+}

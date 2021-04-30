@@ -1,0 +1,13 @@
+<!--miniprogram/pages/enter/enter.wxml-->
+<navigator url="/pages/index/index">
+  <button wx:if="{{canIUse}}" 
+  size='mini'
+  
+  open-type="getUserInfo" 
+  bindgetuserinfo="bindGetUserInfo">
+  授权登录
+ </button>
+      </navigator>
+   
+
+

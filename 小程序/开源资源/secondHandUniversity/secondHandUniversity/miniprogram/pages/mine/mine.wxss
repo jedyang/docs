@@ -1,0 +1,141 @@
+/* miniprogram/pages/mine/mine.wxss */
+.mine-header{
+  width: 750rpx;
+  height: 500rpx;
+  background-color: rgb(205, 241, 238);
+  border-bottom: 1rpx solid #eeeeee;
+  border-radius:0 0 150rpx 150rpx;
+}
+.mine-header image {
+  position: absolute;
+  top: 200rpx;
+  right: 270rpx;
+  height: 200rpx;
+  width: 200rpx;
+  border-radius: 100rpx;
+}
+
+.mine-header .mine-header__name {
+  position: absolute;
+  top: 420rpx;
+  left: 345rpx;
+ 
+  
+  
+}
+
+
+.mine-footer{
+  width: 700rpx;
+  height: 600rpx;
+
+
+}
+
+.mine-list {
+  margin-top: 50rpx;
+  width: 680rpx;
+  margin-left: 25rpx;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #eeeeee;
+  border-radius: 30rpx;
+  background-color: #ffffff;
+  padding-left: 20rpx;
+  /* padding-top: 40rpx; */
+  /* line-height: 80rpx; */
+  align-items: center;
+  /* justify-content: center; */
+}
+.mine-list image{
+  width: 50rpx;
+  height: 50rpx;
+
+}
+.mine-list__item {
+  margin-left: 25rpx;
+}
+.mine-list .mine-list__right {
+  position: absolute;
+  right: 50rpx;
+}
+
+
+
+.shopList{
+  height: 230rpx;
+  width: 700rpx;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgb(236, 234, 234);
+  border-radius: 50rpx;
+  margin: 30rpx 25rpx;
+  padding: 30rpx 0;
+  background-color: white;
+ 
+}
+
+.shopList .shop-img {
+  height: 230rpx;
+  width: 300rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  
+  
+}
+.shopList .shop-img image{
+  height: 220rpx;
+  width: 300rpx;
+  border-radius: 30rpx;
+  
+}
+
+.userList{
+  height: 90rpx;
+  width: 300rpx;
+  /* background-color: turquoise; */
+  display: flex;
+  flex-direction: row;
+  margin-top: 50rpx;
+  
+}
+.userList .user-name{
+  color:rgb(206, 203, 199);
+  padding-left: 20rpx;
+  font-size: 30rpx;
+}
+.userList .user-img image{
+  
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 25rpx;
+
+}
+
+
+.shop-msg {
+  height: 300rpx;
+  width: 300rpx;
+  /* background-color: turquoise; */
+  position: relative;
+
+}
+
+.shop-msg .shop-msg__title {
+  font-size: medium;
+  font-weight: 900;
+}
+.shop-msg .shop-msg__detail {
+  position: absolute;
+  bottom: 80rpx;
+  right:0;
+  font-size: 30rpx;
+  color: rgb(66, 64, 62);
+}
+.shop-msg .shop-msg__addr {
+  position: absolute;
+  bottom: 80rpx;
+  font-size: 30rpx;
+  color: rgb(206, 203, 199);
+}

@@ -1,0 +1,32 @@
+<view class="search">
+  <input bindinput="searchinput"  value="{{input}}"placeholder="校园二手交易平台">
+  </input>
+  <!-- <image  src="../../images/search.svg"></image>  -->
+  <button bindtap="suredetail" type="primary" size="mini">go</button>
+</view>
+
+<!-- 商品显示 -->
+<view wx:for="{{shopList}}" class="shopList">
+      <view class="shop-img">
+        <image src="{{item.pic[0]}}"></image>
+      </view>
+      
+      <view class="shop-msg">
+        <view class="shop-msg__title">{{item.title}}</view>
+      <!-- <view>{{item.type}}</view> -->
+      <view class="userList" wx:for="{{userList}}">
+        <view class="user-img">
+          <image src="{{item.userUrl}}"></image>
+        </view>
+        <view class="user-name">{{item.userName}}</view>
+      </view>
+      <view class="shop-msg__addr">{{item.addr}}</view>
+      <!-- <view>{{item.collection}}</view> -->
+        <!-- <view>{{item.date}}</view> -->
+        <navigator url="/pages/index/detail?_id={{item._id}}">
+          <view class="shop-msg__detail">查看详情</view>
+        </navigator>
+      </view>
+      <!-- <view>{{item.tell}}</view> -->
+     
+</view>

@@ -1,0 +1,60 @@
+<view wx:for="{{userList}}" class="mine-header">
+  <image src="{{item.userUrl}}"></image>
+  <view class="mine-header__name">{{item.userName}}</view>
+</view>
+
+<view class="mine-footer">
+  <view class="mine-list">
+    <image class="mine-list__left"  src="../../images/shezhi.svg"></image>
+  <view class="mine-list__item">设置</view>
+  <image class="mine-list__right" src="../../images/to.svg"></image>
+ 
+ 
+</view>
+<view class="mine-list">
+  <image class="mine-list__left"  src="../../images/two.svg"></image>
+  <view class="mine-list__item">生成二维码</view>
+  <image class="mine-list__right"  src="../../images/to.svg"></image>
+ 
+</view>
+<view class="mine-list">
+  <image class="mine-list__left"  src="../../images/help.svg"></image>
+  <view class="mine-list__item">帮助中心</view>
+  <image class="mine-list__right"  src="../../images/to.svg"></image>
+ 
+ 
+</view>
+
+</view>
+
+
+<van-tabs bind:click="onClick">
+  
+  <van-tab title="我的发布">
+    <!-- 商品显示 -->
+    <view wx:for="{{shopList}}" class="shopList">
+      <view class="shop-img">
+        <image src="{{item.pic[0]}}"></image>
+      </view>
+      
+      <view class="shop-msg">
+        <view class="shop-msg__title">{{item.title}}</view>
+      <!-- <view>{{item.type}}</view> -->
+      <view class="userList" wx:for="{{userList}}">
+        <view class="user-img">
+          <image src="{{item.userUrl}}"></image>
+        </view>
+        <view class="user-name">{{item.userName}}</view>
+      </view>
+      <view class="shop-msg__addr">{{item.addr}}</view>
+      <!-- <view>{{item.collection}}</view> -->
+        <!-- <view>{{item.date}}</view> -->
+        <navigator url="/pages/index/detail?_id={{item._id}}">
+          <view class="shop-msg__detail">查看详情</view>
+        </navigator>
+      </view>
+      <!-- <view>{{item.tell}}</view> -->
+     
+</view>
+  </van-tab>
+</van-tabs>

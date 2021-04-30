@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "闲置详情",
+  "usingComponents": {
+    "index-swiper":"/components/swiper/swiper"
+  }
+}

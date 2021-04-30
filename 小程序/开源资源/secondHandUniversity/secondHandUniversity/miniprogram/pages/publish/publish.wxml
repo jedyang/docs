@@ -1,0 +1,72 @@
+<!-- 闲置类别 -->
+<view class="publish_class">
+    <view>
+        <view class="publish_class__list">
+        <image src="../../images/class.svg"></image>
+        <view class="publish_class__title">商品类型</view>
+    </view>
+    
+    <radio-group class="radio-group" bindchange="radioChange">
+    <label class="radio" wx:for="{{items}}">
+        <radio 
+        class="radio-item" value="{{item.id}}" checked="{{item.checked}}"/>{{item.value}}
+    </label>
+</radio-group>
+    </view>
+</view>
+<view class="publish-msg">
+<!-- 描述 -->
+<view class="publish_msg__list">
+    <image src="../../images/title.svg"></image>
+    <view class="publish_msg__title">名称</view>
+<input placeholder="输入商品名称 8个字以内" bindinput="addTitle"></input>
+</view>
+<view class="publish_msg__list">
+    <image src="../../images/des.svg"></image>
+    <view class="publish_msg__title">描述</view>
+    <input placeholder="输入商品描述" bindinput="addDes"></input>
+</view>
+
+<view class="publish_msg__list">
+    <image src="../../images/addr.svg"></image>
+    <view class="publish_msg__title">地址</view>
+    <input placeholder="输入地址" bindinput="addAddr"></input>
+</view>
+
+<view class="publish_msg__list">
+    <image src="../../images/price.svg"></image>
+    <view class="publish_msg__title">价格</view>
+    
+    <input placeholder="输入商品价格" bindinput="addPrice"></input>
+</view>
+<view class="publish_msg__list">
+    <image src="../../images/tell.svg"></image>
+    <view class="publish_msg__title">联系方式</view>
+    <input placeholder="输入联系方式" bindinput="addTell"></input>
+</view>
+
+
+
+</view>
+
+
+<!-- 联系方式 -->
+<!-- 发布图片 -->
+<view class="publish-img">
+    <image src="../../images/tell.svg"></image>
+    <view class="publish-img__title">实时照片</view>
+    <button bindtap="chooseImg">选择图片</button>
+</view>
+
+<view class="show-img"> 
+    <view wx:for-items="{{pic}}" wx:for-item="item" wx:key="*this">
+        <image mode="widthFix" src="{{item}}" class="image"></image>
+    </view>
+</view>
+
+
+<!-- 发布闲置 -->
+<view class="publish">
+    <van-button 
+type="default" bindtap="addData">发布闲置</van-button>
+</view>

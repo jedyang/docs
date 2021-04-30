@@ -1,0 +1,23 @@
+/* components/search/search.wxss */
+.search {
+  display: flex;
+  flex-direction: row;
+  padding-left: 56rpx;
+}
+
+.search input {
+  height: 80rpx;
+  width: 90%;
+  border: 1px solid rgb(189, 187, 187);
+  border-radius: 40rpx;
+  position: relative;
+  padding-left: 20rpx;
+}
+.search image {
+  position: absolute;
+  right:90rpx;
+  top:470rpx;
+  height: 50rpx;
+  width: 50rpx;
+}
+
