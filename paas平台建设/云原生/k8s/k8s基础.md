@@ -329,6 +329,48 @@ service有自己的虚拟ip，vip
 
 ![image-20210513112709708](k8s基础.assets/image-20210513112709708.png)
 
+
+
+### Kubernetes Objects对象
+
+K8S中有一个Object（对象）的概念。对象表示的是一种期望的实现。我们用一个yaml文件来描述一个期望得到的对象。K8S会努力去实现我们的这种期望。
+
+比如，在K8S中Deployment 对象能够表示运行在集群中的应用
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+- `apiVersion` - 创建该对象所使用的 Kubernetes API 的版本
+
+- `kind` - 想要创建的对象的类别
+
+- `metadata` - 帮助唯一性标识对象的一些数据，包括一个 `name` 字符串、UID 和可选的 `namespace`
+
+- spec。描述我们对这个应用状态的期望。比如replicas：2表示要运行2个pod
+
+  具体的写法要看官方
+
+  [Kubernetes API Reference Docs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#deployment-v1-apps)
+
 ### yaml文件
 
 yaml文件是k8s中的资源清单文件，或者叫资源编排文件。
@@ -444,49 +486,145 @@ template字段部分。
 
    准入控制列表。如果列表中有请求的内容，则通过。否则，拒绝。
 
-### Kubernetes Objects对象
+### Ingress
 
-K8S中有一个Object（对象）的概念。对象表示的是一种期望的实现。我们用一个yaml文件来描述一个期望得到的对象。K8S会努力去实现我们的这种期望。
+ingress作为服务统一入口。ingress不是k8s的内置组件，需要额外安装。
 
-比如，在K8S中Deployment 对象能够表示运行在集群中的应用
+NodePort服务模式的不足：每个node节点都需要开放这个端口，然后通过ip+port的形式访问。而生产环境中，一般都是通过域名访问服务。
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-spec:
-  selector:
-    matchLabels:
-      app: nginx
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:1.14.2
-        ports:
-        - containerPort: 80
-```
+Ingress和pod的关系：pod和ingress通过service进行关联。
 
-- `apiVersion` - 创建该对象所使用的 Kubernetes API 的版本
 
-- `kind` - 想要创建的对象的类别
 
-- `metadata` - 帮助唯一性标识对象的一些数据，包括一个 `name` 字符串、UID 和可选的 `namespace`
+### Helm
 
-- spec。描述我们对这个应用状态的期望。比如replicas：2表示要运行2个pod
+#### 是什么？
 
-  具体的写法要看官方
+helm是k8s的包管理工具。可以方便的将之前打包好的yaml文件部署到k8s上。
 
-  [Kubernetes API Reference Docs](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/#deployment-v1-apps)
+之前部署一个应用的过程：编写yaml文件 --> 创建service对外暴露 --> 通过ingress域名访问 
+
+这种方式的缺点：只适合简单的应用。实际上我们部署微服务项目，可能有几十个服务，用这种方式就不合适了。需要维护大量的yaml文件。
+
+使用helm的优势：
+
+1. 使用helm可以将大量yaml文件作为一个整体进行管理
+2. 实现yaml文件的高效复用。
+3. 实现应用级别的版本管理
+
+总之，helm的作用就是让我们在k8s中部署应用更高效。
+
+helm的核心概念：
+
+1. helm
+
+   是一个命令行客户端工具。用于chart的创建、打包、发布。
+
+2. chart
+
+   应用描述，实际上就是把yaml文件的打包。
+
+3. release
+
+   基于chart部署的实体。就是应用的一个版本。
+
+![helm架构](k8s基础.assets/image-20210517142131666.png)
+
+#### helm安装
+
+1. 从helm官网：https://helm.sh/，下载v3版本的安装包
+
+2. 放到服务器上，解压。将helm目录移动到/usr/bin目录下。
+
+3. 配置helm仓库
+
+   添加仓库：helm repo add 仓库名称  仓库地址
+
+   ```
+   helm repo add aliyun https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
+   ```
+
+   添加阿里云的仓库
+
+   ```
+   helm repo list  #查看仓库
+   helm repo remove aliyun  #删除仓库
+   ```
+
+#### 使用helm快速部署应用
+
+1. 快速搜索应用
+
+   helm search repo 名字
+
+2. 根据搜索结果进行安装
+
+   helm install 安装之后的名称 搜索到的应用名称
+
+3. 查看安装状态
+
+   helm list
+
+   helm status 安装之后的名称
+
+##### 使用helm部署redis
+
+#### 自己创建chart，完成部署
+
+1. 使用命令创建chart
+
+   ```
+   helm create 自定义chart的名字
+   ```
+
+   目录作用：
+
+   - charts：
+   - Chart.yaml: 配置chart的基本信息，版本等。
+   - templates：自己写的yaml文件放在这
+   - valus.yaml: 定义全局变量
+
+2. 在template中创建自己的yaml文件
+
+3. 安装自己的chart
+
+   ```
+   helm install 应用名字  自己的chart名字
+   ```
+
+4. 更新自己的chart
+
+   ```
+   helm upgrade 应用名字  自己的chart名字
+   ```
+
+#### 使用helm进行yaml文件复用
+
+通过传递参数，动态渲染yaml模板。做到yaml的高效复用。
+
+1. 在values.yaml中定义变量和值
+
+2. 在具体的yaml文件中，获取定义的变量值
+
+   表达式：{{.Values.变量名称 }}
+
+3. 执行
+
+   ```
+   helm install 应用名字  自己的chart名字
+   ```
+
+   
 
 ### 存储
 
 #### 卷Volume
+
+Volume 是 Pod 中能够被多个容器访问的共享目录。
+
+Kubernetes 的 Volume 定义在 Pod 上， 它被一个 Pod 中的多个容 器挂载到具体的文件目录下。
+
+Volume 与 Pod 的生命周期相同， 但与容器的生命周期不相关，当容器终止或重启时，Volume 中的数据也不会丢失。
 
 #### PV，PVC和SC
 
